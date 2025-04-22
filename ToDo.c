@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 struct {
@@ -13,19 +14,14 @@ struct {
     Nodo *Siguiente;
 }typedef Nodo;
 
-srand(NULL);
-Nodo * CrearTareas(Tarea Tarea) {
-    Nodo * NodoTarea = (Nodo *)malloc(sizeof(Nodo));
-    NodoTarea->Tarea.TareaID = ;
-    char Descripcion[30];
-    NodoTarea->Tarea.Descripcion = ;
-    NodoTarea->Tarea.Duracion = 10 + rand() * 100 - 10 + 1;
-    NodoTarea->Siguiente = NULL;
-}
-
+Nodo * CrearListaVacia(); 
 
 int main() {
-    
-
+    Nodo * TareasPendientes = CrearListaVacia();
+    Nodo * TareasRealizadas = CrearListaVacia();
     return 0;
+}
+
+Nodo * CrearListaVacia(){
+    return NULL;
 }
