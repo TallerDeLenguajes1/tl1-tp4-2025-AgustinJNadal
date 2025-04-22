@@ -17,6 +17,8 @@ struct {
 Nodo * CrearListaVacia();
 Nodo * CrearNodo(int *id);
 void InsertarTarea(Nodo ** Pendientes, Nodo * NuevaTarea);
+void MostrarTareas(Nodo * pendientes);
+
 
 int main() {
     int id = 1000;
@@ -25,6 +27,9 @@ int main() {
 
     Nodo * NuevaTarea = CrearNodo(&id);
     InsertarTarea(&TareasPendientes, NuevaTarea);
+    MostrarTareas(TareasPendientes);
+    MostrarTareas(TareasRealizadas);
+
     return 0;
 }
 
@@ -59,4 +64,14 @@ Nodo * CrearNodo(int *id){
 void InsertarTarea(Nodo ** Pendientes, Nodo * NuevaTarea){
     NuevaTarea->Siguiente = *Pendientes;
     *Pendientes = NuevaTarea;
+}
+
+void MostrarTareas(Nodo * pendientes){
+    Nodo * Aux = pendientes;
+    while (Aux)
+    {
+        puts("-------------------------");
+        printf("ID: %d | Descripcion: %s | Duracion: %d\n", Aux->Tarea.TareaID, Aux->Tarea.Descripcion, Aux->Tarea.Duracion);
+        Aux = Aux->Siguiente;
+    }
 }
