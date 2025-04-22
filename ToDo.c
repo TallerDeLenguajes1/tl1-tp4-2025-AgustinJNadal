@@ -16,7 +16,7 @@ struct {
 
 Nodo * CrearListaVacia();
 Nodo * CrearNodo(int *id);
-
+void InsertarTarea(Nodo ** Pendientes, Nodo * NuevaTarea);
 
 int main() {
     int id = 1000;
@@ -24,7 +24,7 @@ int main() {
     Nodo * TareasRealizadas = CrearListaVacia();
 
     Nodo * NuevaTarea = CrearNodo(&id);
-
+    InsertarTarea(&TareasPendientes, NuevaTarea);
     return 0;
 }
 
@@ -54,4 +54,9 @@ Nodo * CrearNodo(int *id){
     NuevaTarea->Siguiente = NULL;
     
     return NuevaTarea;
+}
+
+void InsertarTarea(Nodo ** Pendientes, Nodo * NuevaTarea){
+    NuevaTarea->Siguiente = *Pendientes;
+    *Pendientes = NuevaTarea;
 }
