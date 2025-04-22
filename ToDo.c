@@ -9,23 +9,23 @@ struct {
     int Duracion;      // entre 10 – 100
 }typedef Tarea;
 
-struct {
+typedef struct Tnodo{
     Tarea Tarea;
-    Nodo *Siguiente;
-}typedef Nodo;
+    struct Tnodo *Siguiente;
+}Tnodo;
 
-Nodo * CrearListaVacia();
-Nodo * CrearNodo(int *id);
-void InsertarTarea(Nodo ** Pendientes, Nodo * NuevaTarea);
-void MostrarTareas(Nodo * pendientes);
+Tnodo * CrearListaVacia();
+Tnodo * CrearNodo(int *id);
+void InsertarTarea(Tnodo ** Pendientes, Tnodo * NuevaTarea);
+void MostrarTareas(Tnodo * pendientes);
 
 
 int main() {
     int id = 1000;
-    Nodo * TareasPendientes = CrearListaVacia();
-    Nodo * TareasRealizadas = CrearListaVacia();
+    Tnodo * TareasPendientes = CrearListaVacia();
+    Tnodo * TareasRealizadas = CrearListaVacia();
 
-    Nodo * NuevaTarea = CrearNodo(&id);
+    Tnodo * NuevaTarea = CrearNodo(&id);
     InsertarTarea(&TareasPendientes, NuevaTarea);
     MostrarTareas(TareasPendientes);
     MostrarTareas(TareasRealizadas);
@@ -33,12 +33,12 @@ int main() {
     return 0;
 }
 
-Nodo * CrearListaVacia(){
+Tnodo * CrearListaVacia(){
     return NULL;
 }
 
-Nodo * CrearNodo(int *id){
-    Nodo * NuevaTarea = (Nodo *) malloc(sizeof(Nodo));
+Tnodo * CrearNodo(int *id){
+    Tnodo * NuevaTarea = (Tnodo *) malloc(sizeof(Tnodo));
     
     NuevaTarea->Tarea.TareaID = (*id)++;
 
@@ -61,13 +61,13 @@ Nodo * CrearNodo(int *id){
     return NuevaTarea;
 }
 
-void InsertarTarea(Nodo ** Pendientes, Nodo * NuevaTarea){
+void InsertarTarea(Tnodo ** Pendientes, Tnodo * NuevaTarea){
     NuevaTarea->Siguiente = *Pendientes;
     *Pendientes = NuevaTarea;
 }
 
-void MostrarTareas(Nodo * pendientes){
-    Nodo * Aux = pendientes;
+void MostrarTareas(Tnodo * pendientes){
+    Tnodo * Aux = pendientes;
     while (Aux)
     {
         puts("-------------------------");
