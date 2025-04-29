@@ -18,7 +18,8 @@ Tnodo * CrearListaVacia();
 Tnodo * CrearNodo(int *id);
 void InsertarTarea(Tnodo ** Pendientes, Tnodo * NuevaTarea);
 void MostrarTareas(Tnodo * Pendientes);
-Tnodo * BuscarTareas(Tnodo * Pendientes);
+Tnodo * BuscarTarea(Tnodo * Pendientes);
+Tnodo * QuitarTarea(Tnodo * Pendientes, Tnodo ** Tarea);
 
 
 
@@ -31,13 +32,17 @@ int main() {
     InsertarTarea(&TareasPendientes, NuevaTarea);
 
     
-    Tnodo * TareaMover = BuscarTareas(TareasPendientes);
+    Tnodo * TareaQuitar = BuscarTarea(TareasPendientes);
 
-    MostrarTareas(TareaMover);
+    MostrarTareas(TareaQuitar);
+
+    Tnodo * TareaMover = QuitarTarea(TareasPendientes, &TareaQuitar);
+    InsertarTarea(&TareasRealizadas, TareaMover);
+
     /**puts("--------Tareas Pendientes--------");
-    MostrarTareas(TareasPendientes);
+    MostrarTareas(TareasPendientes);**/
     puts("--------Tareas Realizadas--------");
-    MostrarTareas(TareasRealizadas);**/
+    MostrarTareas(TareasRealizadas);
 
 
     return 0;
@@ -86,7 +91,7 @@ void MostrarTareas(Tnodo * Pendientes){
     }
 }
 
-Tnodo * BuscarTareas(Tnodo * Pendientes){
+Tnodo * BuscarTarea(Tnodo * Pendientes){
     int id;
     printf("ingrese Id a buscar: ");
     scanf("%d", &id);
@@ -97,4 +102,15 @@ Tnodo * BuscarTareas(Tnodo * Pendientes){
         Aux = Aux->Siguiente;
     }
     return Aux;
+}
+
+Tnodo * QuitarTarea(Tnodo * Pendientes, Tnodo ** Tarea){
+    if (*Tarea)
+    {
+        Tnodo * temp = *Tarea;
+        *Tarea = (*Tarea)->Siguiente;
+        temp->Siguiente = NULL;
+        return temp;
+    }
+    return NULL;
 }
