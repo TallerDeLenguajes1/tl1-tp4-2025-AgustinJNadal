@@ -18,9 +18,9 @@ Tnodo * CrearListaVacia();
 Tnodo * CrearNodo(int *id);
 void InsertarTarea(Tnodo ** Pendientes, Tnodo * NuevaTarea);
 void MostrarTareas(Tnodo * Pendientes);
-Tnodo * BuscarTarea(Tnodo * Pendientes);
+Tnodo * BuscarId(Tnodo * Pendientes);
 Tnodo * QuitarTarea(Tnodo * Pendientes, Tnodo ** Tarea);
-
+Tnodo * BuscarTareas(Tnodo * Pendientes, Tnodo * Realizadas);
 
 
 int main() {
@@ -32,18 +32,18 @@ int main() {
     InsertarTarea(&TareasPendientes, NuevaTarea);
 
     
-    Tnodo * TareaQuitar = BuscarTarea(TareasPendientes);
+     /**Tnodo * TareaQuitar = BuscarId(TareasPendientes);
 
     MostrarTareas(TareaQuitar);
 
     Tnodo * TareaMover = QuitarTarea(TareasPendientes, &TareaQuitar);
     InsertarTarea(&TareasRealizadas, TareaMover);
 
-    /**puts("--------Tareas Pendientes--------");
-    MostrarTareas(TareasPendientes);**/
+   puts("--------Tareas Pendientes--------");
+    MostrarTareas(TareasPendientes);
     puts("--------Tareas Realizadas--------");
-    MostrarTareas(TareasRealizadas);
-
+    MostrarTareas(TareasRealizadas);**/
+    BuscarTareas(TareasPendientes, TareasRealizadas);
 
     return 0;
 }
@@ -91,7 +91,7 @@ void MostrarTareas(Tnodo * Pendientes){
     }
 }
 
-Tnodo * BuscarTarea(Tnodo * Pendientes){
+Tnodo * BuscarId(Tnodo * Pendientes){
     int id;
     printf("ingrese Id a buscar: ");
     scanf("%d", &id);
@@ -113,4 +113,35 @@ Tnodo * QuitarTarea(Tnodo * Pendientes, Tnodo ** Tarea){
         return temp;
     }
     return NULL;
+}
+
+Tnodo * BuscarTareas(Tnodo * Pendientes, Tnodo * Realizadas){
+    char palabra[15];
+    printf("Ingrese ID o palabra a buscar: ");
+    scanf("%s", palabra);
+
+    int idBuscado = atoi(palabra);
+    int bandera = 0;
+
+    while (Pendientes) {
+        if (Pendientes->Tarea.TareaID == idBuscado || strstr(Pendientes->Tarea.Descripcion, palabra)) {
+            printf("PENDIENTE -> ID: %d | Duracion: %d | Descripcion: %s\n",
+                Pendientes->Tarea.TareaID, Pendientes->Tarea.Duracion, Pendientes->Tarea.Descripcion);
+                bandera = 1;
+            }
+        Pendientes = Pendientes->Siguiente;
+    }
+    while (Realizadas)
+    {
+        if (Realizadas->Tarea.TareaID == idBuscado || strstr(Realizadas->Tarea.Descripcion, palabra))
+        {
+            printf("REALIZADA -> ID: %d | Duracion: %d | Descripcion: %s\n",
+                Realizadas->Tarea.TareaID, Realizadas->Tarea.Duracion, Realizadas->Tarea.Descripcion);
+                bandera = 1;
+            }
+        Realizadas = Realizadas->Siguiente;
+    }
+    if (bandera == 0) {
+        printf("No se encontraron tareas que coincidan.\n");
+    }
 }
