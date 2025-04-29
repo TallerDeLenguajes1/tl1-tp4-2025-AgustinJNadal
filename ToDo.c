@@ -17,7 +17,9 @@ typedef struct Tnodo{
 Tnodo * CrearListaVacia();
 Tnodo * CrearNodo(int *id);
 void InsertarTarea(Tnodo ** Pendientes, Tnodo * NuevaTarea);
-void MostrarTareas(Tnodo * pendientes);
+void MostrarTareas(Tnodo * Pendientes);
+Tnodo * BuscarTareas(Tnodo * Pendientes);
+
 
 
 int main() {
@@ -27,8 +29,16 @@ int main() {
 
     Tnodo * NuevaTarea = CrearNodo(&id);
     InsertarTarea(&TareasPendientes, NuevaTarea);
+
+    
+    Tnodo * TareaMover = BuscarTareas(TareasPendientes);
+
+    MostrarTareas(TareaMover);
+    /**puts("--------Tareas Pendientes--------");
     MostrarTareas(TareasPendientes);
-    MostrarTareas(TareasRealizadas);
+    puts("--------Tareas Realizadas--------");
+    MostrarTareas(TareasRealizadas);**/
+
 
     return 0;
 }
@@ -66,12 +76,25 @@ void InsertarTarea(Tnodo ** Pendientes, Tnodo * NuevaTarea){
     *Pendientes = NuevaTarea;
 }
 
-void MostrarTareas(Tnodo * pendientes){
-    Tnodo * Aux = pendientes;
+void MostrarTareas(Tnodo * Pendientes){
+    Tnodo * Aux = Pendientes;
     while (Aux)
     {
-        puts("-------------------------");
         printf("ID: %d | Descripcion: %s | Duracion: %d\n", Aux->Tarea.TareaID, Aux->Tarea.Descripcion, Aux->Tarea.Duracion);
+        puts("-------------------------");
         Aux = Aux->Siguiente;
     }
+}
+
+Tnodo * BuscarTareas(Tnodo * Pendientes){
+    int id;
+    printf("ingrese Id a buscar: ");
+    scanf("%d", &id);
+
+    Tnodo * Aux = Pendientes;
+    while (Aux && Aux->Tarea.TareaID != id)
+    {
+        Aux = Aux->Siguiente;
+    }
+    return Aux;
 }
