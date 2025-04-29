@@ -18,8 +18,7 @@ Tnodo * CrearListaVacia();
 Tnodo * CrearNodo(int *id);
 void InsertarTarea(Tnodo ** Pendientes, Tnodo * NuevaTarea);
 void MostrarTareas(Tnodo * Pendientes);
-Tnodo * BuscarId(Tnodo * Pendientes);
-Tnodo * QuitarTarea(Tnodo ** Pendientes, Tnodo ** Tarea);
+Tnodo * QuitarTarea(Tnodo ** Pendientes);
 void BuscarTareas(Tnodo * Pendientes, Tnodo * Realizadas);
 void LiberarTarea(Tnodo * Pendientes);
 
@@ -49,8 +48,7 @@ int main() {
             break;
         }
         case 2:{
-            Tnodo * TareaQuitar = BuscarId(TareasPendientes);
-            Tnodo * TareaMover = QuitarTarea(&TareasPendientes, &TareaQuitar);
+            Tnodo * TareaMover = QuitarTarea(&TareasPendientes);
             if (TareaMover)
             {
                 InsertarTarea(&TareasRealizadas, TareaMover);
@@ -123,33 +121,34 @@ void MostrarTareas(Tnodo * Pendientes){
     while (Aux)
     {
         printf("ID: %d | Descripcion: %s | Duracion: %d\n", Aux->Tarea.TareaID, Aux->Tarea.Descripcion, Aux->Tarea.Duracion);
-        puts("-------------------------");
         Aux = Aux->Siguiente;
     }
 }
 
-Tnodo * BuscarId(Tnodo * Pendientes){
-    int id;
-    printf("ingrese Id a buscar: ");
-    scanf("%d", &id);
 
-    Tnodo * Aux = Pendientes;
-    while (Aux && Aux->Tarea.TareaID != id)
-    {
-        Aux = Aux->Siguiente;
-    }
-    return Aux;
-}
+Tnodo * QuitarTarea(Tnodo ** Pendientes){
+    int idBuscar;
+    printf("Ingrese ID de la tarea realizada: ");
+    scanf("%d", &idBuscar);
+    fflush(stdin);
 
-Tnodo * QuitarTarea(Tnodo ** Pendientes, Tnodo ** Tarea){
-    if (*Tarea)
-    {
-        Tnodo * aux= *Tarea;
-        *Tarea = (*Tarea)->Siguiente;
-        aux->Siguiente = NULL;
-        return aux;
+    Tnodo * aux = *Pendientes;
+    Tnodo * anterior = NULL;
+
+    while (aux && aux->Tarea.TareaID != idBuscar) {
+        anterior = aux;
+        aux = aux->Siguiente;
     }
-    return NULL;
+    if (anterior == NULL)
+    {
+        *Pendientes = aux->Siguiente;
+    }
+    else
+    {
+        anterior->Siguiente = aux->Siguiente;
+    }
+    aux->Siguiente = NULL;
+    return aux;
 }
 
 void BuscarTareas(Tnodo * Pendientes, Tnodo * Realizadas){
