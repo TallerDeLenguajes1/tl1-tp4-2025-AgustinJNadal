@@ -19,31 +19,68 @@ Tnodo * CrearNodo(int *id);
 void InsertarTarea(Tnodo ** Pendientes, Tnodo * NuevaTarea);
 void MostrarTareas(Tnodo * Pendientes);
 Tnodo * BuscarId(Tnodo * Pendientes);
-Tnodo * QuitarTarea(Tnodo * Pendientes, Tnodo ** Tarea);
-Tnodo * BuscarTareas(Tnodo * Pendientes, Tnodo * Realizadas);
-
+Tnodo * QuitarTarea(Tnodo ** Pendientes, Tnodo ** Tarea);
+void BuscarTareas(Tnodo * Pendientes, Tnodo * Realizadas);
+void LiberarTarea(Tnodo * Pendientes);
 
 int main() {
     int id = 1000;
     Tnodo * TareasPendientes = CrearListaVacia();
     Tnodo * TareasRealizadas = CrearListaVacia();
+    int opcion; 
 
-    Tnodo * NuevaTarea = CrearNodo(&id);
-    InsertarTarea(&TareasPendientes, NuevaTarea);
+    do
+    {
+        puts("--- MENU ---");
+        puts("1 - Agregar tarea pendiente");
+        puts("2 - Marcar tarea como realizada");
+        puts("3 - Mostrar tareas");
+        puts("4 - Buscar tarea por ID o palabra clave");
+        puts("0 - Salir");
+        printf("Seleccione una opcion: ");
+        scanf("%d", &opcion);
+        fflush(stdin);
 
-    
-     /**Tnodo * TareaQuitar = BuscarId(TareasPendientes);
-
-    MostrarTareas(TareaQuitar);
-
-    Tnodo * TareaMover = QuitarTarea(TareasPendientes, &TareaQuitar);
-    InsertarTarea(&TareasRealizadas, TareaMover);
-
-   puts("--------Tareas Pendientes--------");
-    MostrarTareas(TareasPendientes);
-    puts("--------Tareas Realizadas--------");
-    MostrarTareas(TareasRealizadas);**/
-    BuscarTareas(TareasPendientes, TareasRealizadas);
+        switch (opcion)
+        {
+        case 1:{
+            Tnodo * NuevaTarea = CrearNodo(&id);
+            InsertarTarea(&TareasPendientes, NuevaTarea);
+            break;
+        }
+        case 2:{
+            Tnodo * TareaQuitar = BuscarId(TareasPendientes);
+            Tnodo * TareaMover = QuitarTarea(&TareasPendientes, &TareaQuitar);
+            if (TareaMover)
+            {
+                InsertarTarea(&TareasRealizadas, TareaMover);
+                puts("Tarea movida con exito");
+            }
+            else
+            {
+                puts("Tarea no encontrada");
+            }
+            break;
+        }        
+        case 3:
+            puts("--------Tareas Pendientes--------");
+            MostrarTareas(TareasPendientes);
+            puts("--------Tareas Realizadas--------");
+            MostrarTareas(TareasRealizadas);
+            break;       
+        case 4:
+            BuscarTareas(TareasPendientes, TareasRealizadas);
+            break;      
+        case 0:
+            LiberarTarea(TareasPendientes);
+            LiberarTarea(TareasRealizadas);
+            puts("Fin");
+            break;      
+        default:
+            puts("Opcion invalida");
+            break;
+        }
+    } while (opcion != 0);
 
     return 0;
 }
@@ -104,18 +141,18 @@ Tnodo * BuscarId(Tnodo * Pendientes){
     return Aux;
 }
 
-Tnodo * QuitarTarea(Tnodo * Pendientes, Tnodo ** Tarea){
+Tnodo * QuitarTarea(Tnodo ** Pendientes, Tnodo ** Tarea){
     if (*Tarea)
     {
-        Tnodo * temp = *Tarea;
+        Tnodo * aux= *Tarea;
         *Tarea = (*Tarea)->Siguiente;
-        temp->Siguiente = NULL;
-        return temp;
+        aux->Siguiente = NULL;
+        return aux;
     }
     return NULL;
 }
 
-Tnodo * BuscarTareas(Tnodo * Pendientes, Tnodo * Realizadas){
+void BuscarTareas(Tnodo * Pendientes, Tnodo * Realizadas){
     char palabra[15];
     printf("Ingrese ID o palabra a buscar: ");
     scanf("%s", palabra);
@@ -143,5 +180,15 @@ Tnodo * BuscarTareas(Tnodo * Pendientes, Tnodo * Realizadas){
     }
     if (bandera == 0) {
         printf("No se encontraron tareas que coincidan.\n");
+    }
+}
+
+void LiberarTarea(Tnodo * Pendientes){
+    while (Pendientes)
+    {
+        Tnodo * aux = Pendientes;
+        Pendientes = Pendientes->Siguiente;
+        free(aux->Tarea.Descripcion);
+        free(aux);
     }
 }
